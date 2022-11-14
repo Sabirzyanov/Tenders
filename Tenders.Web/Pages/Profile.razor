@@ -1,0 +1,372 @@
+@inject AuthorizationService AuthorizationService
+@inject UserResourceService UserResourceService
+@inject ProjectResourceService ProjectResourceService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
+
+@page "/Profile"
+@using Tenders.Web.Services
+@using Tenders.Core.Entities
+@using Tenders.Core.Entities.Project
+@using Tenders.Core.Enums
+@using Tenders.Data
+@using Tenders.Web.Data
+@if (AuthorizationService.CurrentUser is not null)
+{
+    <div class="main-body">
+    <div class="row gutters-sm">
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-column align-items-center text-center">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                    <div class="mt-3">
+                        <h4>@AuthorizationService.CurrentUser.Login</h4>
+                        @if (AuthorizationService.CurrentUser.UserType == UserType.Customer)
+                        {
+                            <p class="text-secondary mb-1">@_currentUserInfo.IndustryType</p>
+                        }
+                        <p class="text-muted font-size-sm">@_currentUserInfo.Address</p>
+                        <button class="btn btn-primary">Follow</button>
+                        <button class="btn btn-outline-primary">Message</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+
+    <div class="card mb-3">
+
+    <div class="card-body">
+    @if (!_isEditing)
+    {
+        <div class="row">
+            <div class="col-sm-3">
+                <h6 class="mb-0">Full Name</h6>
+            </div>
+            <div class="col-sm-9 text-secondary">
+                @_currentUserInfo.Name
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-3">
+                <h6 class="mb-0">Email</h6>
+            </div>
+            <div class="col-sm-9 text-secondary">
+                @AuthorizationService.CurrentUser.EMail
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-3">
+                <h6 class="mb-0">Phone</h6>
+            </div>
+            <div class="col-sm-9 text-secondary">
+                @AuthorizationService.CurrentUser.PhoneNumber
+            </div>
+        </div>
+        <hr>
+        @if (AuthorizationService.CurrentUser.UserType != UserType.Customer)
+        {
+            <div class="row">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Address</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    @_currentUserInfo.Address
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">TIN</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    @_currentUserInfo.TIN
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">TRRC</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    @_currentUserInfo.TRRC
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">PSRN</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    @_currentUserInfo.PSRN
+                </div>
+            </div>
+            <hr>
+            @if (AuthorizationService.CurrentUser.UserType == UserType.Architect)
+            {
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Director</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        @_currentUserInfo.Director
+                    </div>
+                </div>
+                <hr>
+            }
+            <div class="row">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Manager</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    @_currentUserInfo.ProjectManager
+                </div>
+            </div>
+            <hr>
+        }
+    }
+    else
+    {
+        <div class="row mb-3">
+            <div class="col-sm-3">
+                <h6 class="mb-0">Name</h6>
+            </div>
+            <div class="col-sm-9 text-secondary">
+                <input type="text" @bind="@_currentUserInfo.Name" class="form-control">
+            </div>
+        </div>
+        <hr>
+        <div class="row mb-3">
+            <div class="col-sm-3">
+                <h6 class="mb-0">Email</h6>
+            </div>
+            <div class="col-sm-9 text-secondary">
+                <input type="text" @bind="@AuthorizationService.CurrentUser.EMail" class="form-control">
+            </div>
+        </div>
+        <hr>
+        <div class="row mb-3">
+            <div class="col-sm-3">
+                <h6 class="mb-0">Phone</h6>
+            </div>
+            <div class="col-sm-9 text-secondary">
+                <input type="tel" @bind="@AuthorizationService.CurrentUser.PhoneNumber" id="phoneNumber" @onkeydown='async () => await JsRuntime.InvokeVoidAsync("phoneNumberFormatter")' class="form-control">
+            </div>
+        </div>
+        <hr>
+        @if (AuthorizationService.CurrentUser.UserType != UserType.Customer)
+        {
+            <div class="row mb-3">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Address</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    <input type="text" class="form-control" @bind="_currentUserInfo.Address">
+                </div>
+            </div>
+            <hr>
+            <div class="row mb-3">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">TIN</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    <input type="text" class="form-control" @bind="_currentUserInfo.TIN">
+                </div>
+            </div>
+            <hr>
+            <div class="row mb-3">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">TRRC</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    <input type="text" class="form-control" @bind="_currentUserInfo.TRRC">
+                </div>
+            </div>
+            <hr>
+            <div class="row mb-3">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">PSRN</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    <input type="text" class="form-control" @bind="_currentUserInfo.PSRN">
+                </div>
+            </div>
+            <hr>
+            @if (AuthorizationService.CurrentUser.UserType == UserType.Architect)
+            {
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Director</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" class="form-control" @bind="_currentUserInfo.Director">
+                    </div>
+                </div>
+                <hr>
+            }
+            <div class="row mb-3">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Manager</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    <input type="text" class="form-control" @bind="_currentUserInfo.ProjectManager">
+                </div>
+            </div>
+            <hr>
+        }
+        else
+        {
+            <div class="row mb-3">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Industry type</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    <input type="text" class="form-control" @bind="_currentUserInfo.IndustryType">
+                </div>
+            </div>
+            <hr>
+        }
+        <div class="row">
+            <div class="col-sm-12">
+                <input type="button"style="margin-bottom: 2%;" class="btn btn-success" @onclick="Update" value="Save Changes">
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-sm-12">
+            <a class="btn btn-info" style="cursor: pointer" @onclick="() => { _isEditing = !_isEditing; }">
+                @{ var cancel = _isEditing ? "Cancel" : "Edit"; }
+                @cancel
+            </a>
+        </div>
+    </div>
+    </div>
+    </div>
+
+
+    <div>
+        @if (_currentProjects is not null)
+        {
+            @foreach (var project in _currentProjects)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@project.Name</h5>
+                        <p class="card-text">@project.Description</p>
+                        <button type="button" class="btn btn-primary" @onclick="() => { OpenProject(project); }">Open</button>
+                    </div>
+                </div>
+            }
+        }
+        
+
+    </div>
+
+
+    </div>
+    </div>
+
+    </div>
+}
+
+@code {
+    UserInfos? _currentUserInfo = new();
+    private List<Project> _currentProjects;
+    private bool _isEditing;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await JsRuntime.InvokeVoidAsync("loadScript", "https://code.jquery.com/jquery-3.4.1.js");
+        await JsRuntime.InvokeVoidAsync("loadScript", "/js/script.js");
+        if (AuthorizationService.CurrentUser is null)
+            return;
+
+        if (AuthorizationService.CurrentUser.UserType == UserType.Customer)
+            _currentProjects = (await ProjectResourceService.GetProjectsByIndustry((AuthorizationService.CurrentUser as Customer).IndustryType.Value)).ToList();
+        else if (AuthorizationService.CurrentUser.UserType == UserType.Architect)
+            _currentProjects = (await ProjectResourceService.GetAllProjects()).Where(x => x.ArchitectId == AuthorizationService.CurrentUser.Id).ToList();
+        else if (AuthorizationService.CurrentUser.UserType == UserType.Builder)
+            _currentProjects = (await ProjectResourceService.GetAllProjects()).Where(x => x.BuilderId == AuthorizationService.CurrentUser.Id).ToList();
+        
+        CastUserToInfo();
+    }
+
+
+    public void CastUserToInfo()
+    {
+        BaseUser currentUser = AuthorizationService.CurrentUser;
+        _currentUserInfo = AuthorizationService.CurrentUser.UserType switch 
+        {
+            UserType.Customer => new()
+            {
+                Name = (currentUser as Customer).FullName,
+                IndustryType = (currentUser as Customer).IndustryType.ToString(),
+            },
+            UserType.Architect => new()
+            {
+                Name = (currentUser as Architect).OrganizationName,
+                PSRN = (currentUser as Architect).PSRN,
+                TIN = (currentUser as Architect).TIN,
+                TRRC = (currentUser as Architect).TRRC,
+                Address = (currentUser as Architect).Address,
+                Director = (currentUser as Architect).Director,
+                ProjectManager = (currentUser as Architect).ProjectManager,
+            },
+            UserType.Builder => new()
+            {
+                Name = (currentUser as Builder).Name,
+                PSRN = (currentUser as Builder).PSRN,
+                TIN = (currentUser as Builder).TIN,
+                TRRC = (currentUser as Builder).TRRC,
+                Address = (currentUser as Builder).Address,
+                ProjectManager = (currentUser as Builder).Manager,
+            },
+            };
+    }
+
+    private async void Update()
+    {
+        switch (AuthorizationService.CurrentUser.UserType)
+        {
+            case UserType.Customer:
+                ((AuthorizationService.CurrentUser as Customer)!).FullName = _currentUserInfo.Name;
+                break;
+
+            case UserType.Architect:
+                ((AuthorizationService.CurrentUser as Architect)!).Address = _currentUserInfo.Address;
+                ((AuthorizationService.CurrentUser as Architect)!).OrganizationName = _currentUserInfo.Name;
+                ((AuthorizationService.CurrentUser as Architect)!).TIN = _currentUserInfo.TIN;
+                ((AuthorizationService.CurrentUser as Architect)!).TRRC = _currentUserInfo.TRRC;
+                ((AuthorizationService.CurrentUser as Architect)!).PSRN = _currentUserInfo.PSRN;
+                ((AuthorizationService.CurrentUser as Architect)!).Director = _currentUserInfo.Director;
+                ((AuthorizationService.CurrentUser as Architect)!).ProjectManager = _currentUserInfo.ProjectManager;
+                break;
+
+            case UserType.Builder:
+                ((AuthorizationService.CurrentUser as Builder)!).Address = _currentUserInfo.Address;
+                ((AuthorizationService.CurrentUser as Builder)!).Name = _currentUserInfo.Name;
+                ((AuthorizationService.CurrentUser as Builder)!).TIN = _currentUserInfo.TIN;
+                ((AuthorizationService.CurrentUser as Builder)!).TRRC = _currentUserInfo.TRRC;
+                ((AuthorizationService.CurrentUser as Builder)!).PSRN = _currentUserInfo.PSRN;
+                ((AuthorizationService.CurrentUser as Builder)!).Manager = _currentUserInfo.ProjectManager;
+                break;
+        }
+
+        if ((await UserResourceService.Update(AuthorizationService.CurrentUser)).GetType() == Results.Ok().GetType())
+        {
+            _isEditing = false;
+            StateHasChanged();
+        }
+    }
+
+    private void OpenProject(Project project)
+    {
+        NavigationManager.NavigateTo($"/EditProject/{project.Id}");
+    }
+
+}

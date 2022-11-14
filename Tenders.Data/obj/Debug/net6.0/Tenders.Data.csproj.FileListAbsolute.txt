@@ -1,0 +1,17 @@
+C:\Programming\C#\Tenders\Tenders.Data\bin\Debug\net6.0\Tenders.Data.deps.json
+C:\Programming\C#\Tenders\Tenders.Data\bin\Debug\net6.0\Tenders.Data.dll
+C:\Programming\C#\Tenders\Tenders.Data\bin\Debug\net6.0\Tenders.Data.pdb
+C:\Programming\C#\Tenders\Tenders.Data\bin\Debug\net6.0\Tenders.Core.dll
+C:\Programming\C#\Tenders\Tenders.Data\bin\Debug\net6.0\Tenders.Core.pdb
+C:\Programming\C#\Tenders\Tenders.Data\obj\Debug\net6.0\Tenders.Data.csproj.AssemblyReference.cache
+C:\Programming\C#\Tenders\Tenders.Data\obj\Debug\net6.0\Tenders.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\Programming\C#\Tenders\Tenders.Data\obj\Debug\net6.0\Tenders.Data.AssemblyInfoInputs.cache
+C:\Programming\C#\Tenders\Tenders.Data\obj\Debug\net6.0\Tenders.Data.AssemblyInfo.cs
+C:\Programming\C#\Tenders\Tenders.Data\obj\Debug\net6.0\Tenders.Data.csproj.CoreCompileInputs.cache
+C:\Programming\C#\Tenders\Tenders.Data\obj\Debug\net6.0\Tenders.Data.csproj.CopyComplete
+C:\Programming\C#\Tenders\Tenders.Data\obj\Debug\net6.0\Tenders.Data.dll
+C:\Programming\C#\Tenders\Tenders.Data\obj\Debug\net6.0\refint\Tenders.Data.dll
+C:\Programming\C#\Tenders\Tenders.Data\obj\Debug\net6.0\Tenders.Data.pdb
+C:\Programming\C#\Tenders\Tenders.Data\obj\Debug\net6.0\ref\Tenders.Data.dll
+C:\Programming\C#\Tenders\Tenders.Data\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Programming\C#\Tenders\Tenders.Data\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll

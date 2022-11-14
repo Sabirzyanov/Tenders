@@ -1,0 +1,246 @@
+@page "/Registration"
+@using Tenders.Web.Services
+@using Tenders.Core.Entities
+@using Tenders.Core.Enums
+@using Tenders.Data
+@using Tenders.Web.Data
+@using Microsoft.AspNetCore.Components
+@inject AuthorizationService AuthorizationService
+@inject NavigationManager NavigationManager;
+@inject IJSRuntime JsRuntime
+
+<h3>Registration</h3>
+<form name="regForm" class="needs-validation">
+    <div class="form-group">
+        <label for="emailInput">Email address</label>
+        <input type="email" class="form-control @emailClass" @onkeydown='() => { emailClass = ""; }' required @bind="_userInfos.EMail" aria-describedby="emailInvalid" id="emailInput" placeholder="Enter email">
+        <div class='invalid-feedback' id="emailInvalid">
+            Email was been registered
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="loginInput">Login</label>
+        <input type="text" class="form-control" required @bind="_userInfos.Login" id="loginInput" placeholder="Login">
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" @onkeydown='() => { passwordClass = ""; }' aria-describedby="passwordInvalid" class="form-control @passwordClass" required @bind="_userInfos.Password" id="password" placeholder="Password">
+        <div class='invalid-feedback' id="passwordInvalid">
+            Password must be:
+            <br>- more than 8 characters
+            <br>- Must contain a capital letter
+            <br>- Must contain a digit
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="repeatPassword">Repeat password</label>
+        <input type="password" @onkeydown='() => { repeatPasswordClass = ""; }' class="form-control @repeatPasswordClass" aria-describedby="repeatPasswordInvalid" required @bind="_repeatPassword" id="repeatPassword" placeholder="Repeat password">
+        <div class='invalid-feedback' id="repeatPasswordInvalid">
+            Passwords dont match
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="phoneNumber">Phone number</label>
+        <input type="tel" @bind="_userInfos.PhoneNumber" @onkeydown='async () => await JsRuntime.InvokeVoidAsync("phoneNumberFormatter")' class="form-control" id="phoneNumber" placeholder="Phone">
+    </div>
+    <div class="form-group">
+        <select class="form-select" @bind="_userInfos.UserRole" @onclick="CastUser">    
+            <option selected value="">Choose...</option>
+            <option value="Customer">Customer</option>
+            <option value="Architect">Architect</option>
+            <option value="Builder">Builder</option>
+        </select>
+    </div>
+    @if (_userInfos.UserRole is not null)
+    {
+        @switch (_userInfos.UserRole)
+        {
+            case "Customer":
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" class="form-control" @bind="@_userInfos.Name" id="fullName" aria-describedby="emailHelp" placeholder="Full Name">
+                </div>
+                <div class="form-group">
+                    <select class="form-select" id="inputGroupSelect01" @bind="@_userInfos.IndustryType">
+                        <option selected>Choose...</option>
+                        <option value="WaterSupply">Water supply</option>
+                        <option value="GasSupply">Gas supply</option>
+                    </select>
+                </div>
+                break;
+            case "Architect":
+                <div class="form-group">
+                    <label for="orgName">Org Name</label>
+                    <input type="text" @bind="@_userInfos.Name" class="form-control" id="orgName" placeholder="Organization Name">
+                </div>
+                <div class="form-group">
+                    <label for="psrn">PSRN</label>
+                    <input type="text" @bind="@_userInfos.PSRN" class="form-control" id="psrn" placeholder="ОГРН">
+                </div>
+                <div class="form-group">
+                    <label for="tin">TIN</label>
+                    <input type="text" @bind="@_userInfos.TIN" class="form-control" id="tin" placeholder="ИНН">
+                </div>
+                <div class="form-group">
+                    <label for="trrc">TRRC</label>
+                    <input type="text" @bind="@_userInfos.TRRC" class="form-control" id="trrc" placeholder="КПП">
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" @bind="@_userInfos.Address" class="form-control" id="address" placeholder="Address">
+                </div>
+                <div class="form-group">
+                    <label for="director">Director</label>
+                    <input type="text" @bind="@_userInfos.Director" class="form-control" id="director" placeholder="Director Name">
+                </div>
+                <div class="form-group">
+                    <label for="projectManager">Project Manager</label>
+                    <input type="text" @bind="@_userInfos.ProjectManager" class="form-control" id="projectManager" placeholder="Project Manager Name">
+                </div>
+                break;
+            case "Builder":
+                <div class="form-group">
+                    <label for="orgName">Name</label>
+                    <input type="text" @bind="@_userInfos.Name" class="form-control" id="orgName" placeholder="Organization Name">
+                </div>
+                <div class="form-group">
+                    <label for="psrn">PSRN</label>
+                    <input type="text" @bind="@_userInfos.PSRN" class="form-control" id="psrn" placeholder="ОГРН">
+                </div>
+                <div class="form-group">
+                    <label for="tin">TIN</label>
+                    <input type="text" @bind="@_userInfos.TIN" class="form-control" id="tin" placeholder="ИНН">
+                </div>
+                <div class="form-group">
+                    <label for="trrc">TRRC</label>
+                    <input type="text" @bind="@_userInfos.TRRC" class="form-control" id="trrc" placeholder="КПП">
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" @bind="@_userInfos.Address" class="form-control" id="address" placeholder="Address">
+                </div>
+                <div class="form-group">
+                    <label for="projectManager">Project Manager</label>
+                    <input type="text" @bind="@_userInfos.ProjectManager" class="form-control" id="projectManager" placeholder="Project Manager Name">
+                </div>
+                break;
+            default:
+                break;
+        }
+    }
+
+    <button type="button" class="btn btn-success" style="margin-top: 10px;" @onclick="@Reg">Sign Up</button>
+    <button type="button" class="btn btn-primary" style="margin-top: 10px;" @onclick='() => NavigationManager.NavigateTo("/Authorization")'>Sign In</button>
+</form>
+
+@code {
+    private BaseUser? _potentialUser;
+    readonly UserInfos _userInfos = new();
+    private string _repeatPassword = "";
+    private string repeatPasswordClass;
+    private string passwordClass;
+    private string emailClass;
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JsRuntime.InvokeVoidAsync("loadScript", "https://code.jquery.com/jquery-3.4.1.js");
+        await JsRuntime.InvokeVoidAsync("loadScript", "/js/script.js");
+
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private void CastUser()
+    {
+        if (_userInfos.UserRole is "" or null)
+            return;
+
+        _potentialUser = _userInfos.UserRole switch 
+        {
+            "Customer" => new Customer(_userInfos.Login, AuthorizationService.ComputeHashPassword(_userInfos.Password), _userInfos.EMail, _userInfos.PhoneNumber,
+                UserType.Customer)
+            {
+                IndustryType = (IndustryType)Enum.Parse(typeof(IndustryType), _userInfos.IndustryType ?? "WaterSupply"),
+                FullName = _userInfos.Name ?? ""
+            },
+            "Architect" => new Architect(_userInfos.Login, AuthorizationService.ComputeHashPassword(_userInfos.Password),
+                _userInfos.EMail, _userInfos.PhoneNumber, UserType.Architect)
+            {
+                OrganizationName = _userInfos.Name,
+                PSRN = _userInfos.PSRN,
+                TIN = _userInfos.TIN,
+                TRRC = _userInfos.TRRC,
+                Address = _userInfos.Address,
+                Director = _userInfos.Director,
+                ProjectManager = _userInfos.ProjectManager,
+            },
+            "Builder" => new Builder(_userInfos.Login, AuthorizationService.ComputeHashPassword(_userInfos.Password),
+                _userInfos.EMail, _userInfos.PhoneNumber, UserType.Builder)
+            {
+                Name = _userInfos.Name,
+                PSRN = _userInfos.PSRN,
+                TIN = _userInfos.TIN,
+                TRRC = _userInfos.TRRC,
+                Address = _userInfos.Address,
+                Manager = _userInfos.ProjectManager,
+            },
+            };
+    }
+
+    private bool CheckPassword(string password)
+    {
+        if (password is null)
+            return false;
+
+        if (password.Length < 8 || !password.Any(char.IsUpper) || !password.Any(char.IsDigit))
+            return false;
+
+        return true;
+    }
+
+    private bool ChechEMail(string email)
+    {
+        if (email is null)
+            return false;
+
+        if (!email.Contains('@'))
+            return false;
+
+        return true;
+    }
+
+    private async Task Reg()
+    {
+        CastUser();
+
+        if (!ChechEMail(_userInfos.EMail))
+            return;
+
+        if (!CheckPassword(_userInfos.Password))
+        {
+            passwordClass = "is-invalid";
+            return;
+        }
+        if (_userInfos.Password != _repeatPassword)
+        {
+            repeatPasswordClass = "is-invalid";
+            return;
+        }
+
+        if (_potentialUser != null)
+        {
+            var result = await AuthorizationService.Register(_potentialUser);
+            if (result.GetType() == Results.Ok().GetType())
+                NavigationManager.NavigateTo("/Authorization");
+
+            else if (result.GetType() == Results.BadRequest().GetType())
+            {
+                emailClass = "is-invalid";
+                return;
+            }
+        }
+    }
+
+
+}

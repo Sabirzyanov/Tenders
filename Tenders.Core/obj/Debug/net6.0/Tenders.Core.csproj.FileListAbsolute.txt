@@ -1,0 +1,12 @@
+C:\Programming\C#\Tenders\Tenders.Core\bin\Debug\net6.0\Tenders.Core.deps.json
+C:\Programming\C#\Tenders\Tenders.Core\bin\Debug\net6.0\Tenders.Core.dll
+C:\Programming\C#\Tenders\Tenders.Core\bin\Debug\net6.0\Tenders.Core.pdb
+C:\Programming\C#\Tenders\Tenders.Core\obj\Debug\net6.0\Tenders.Core.csproj.AssemblyReference.cache
+C:\Programming\C#\Tenders\Tenders.Core\obj\Debug\net6.0\Tenders.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Programming\C#\Tenders\Tenders.Core\obj\Debug\net6.0\Tenders.Core.AssemblyInfoInputs.cache
+C:\Programming\C#\Tenders\Tenders.Core\obj\Debug\net6.0\Tenders.Core.AssemblyInfo.cs
+C:\Programming\C#\Tenders\Tenders.Core\obj\Debug\net6.0\Tenders.Core.csproj.CoreCompileInputs.cache
+C:\Programming\C#\Tenders\Tenders.Core\obj\Debug\net6.0\Tenders.Core.dll
+C:\Programming\C#\Tenders\Tenders.Core\obj\Debug\net6.0\refint\Tenders.Core.dll
+C:\Programming\C#\Tenders\Tenders.Core\obj\Debug\net6.0\Tenders.Core.pdb
+C:\Programming\C#\Tenders\Tenders.Core\obj\Debug\net6.0\ref\Tenders.Core.dll

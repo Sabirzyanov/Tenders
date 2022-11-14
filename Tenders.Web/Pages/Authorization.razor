@@ -1,0 +1,41 @@
+@page "/Authorization"
+@using Tenders.Web.Services
+@using Microsoft.AspNetCore.Components
+@using Tenders.Core.Entities
+
+@inject AuthorizationService AuthorizationService
+@inject NavigationManager NavigationManager;
+@inject ILogger<Program> Logger;
+
+<h3>Authorization</h3>
+
+<form>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Email address</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" @bind="_email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group" style="margin-top: 10px;">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" @bind="_password">
+    </div>
+</form>
+
+<button type="submit" class="btn btn-success" style="margin-top: 10px;" @onclick="@Auth">Sign In</button>
+<button type="submit" class="btn btn-primary" style="margin-top: 10px;" @onclick='() => NavigationManager.NavigateTo("/Registration")'>Sign Up</button>
+
+@code {
+    private string _email;
+    private string _password;
+
+    private async Task Auth()
+    {
+        Logger.LogInformation(_email);
+        if ((await AuthorizationService.Authorize(_email, _password)).GetType() == Results.Ok().GetType())
+        {
+            Logger.LogInformation(AuthorizationService.CurrentUser.Login);
+            NavigationManager.NavigateTo("/");
+        }
+    }
+
+}

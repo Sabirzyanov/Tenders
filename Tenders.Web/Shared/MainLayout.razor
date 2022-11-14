@@ -1,0 +1,32 @@
+﻿@using Tenders.Web.Services
+@inherits LayoutComponentBase
+@inject AuthorizationService AuthorizationService
+@inject NavigationManager NavigationManager
+
+<div class="main">
+    <NavMenu/>
+    <div class="container-lg">
+        <article class="content px-4" style="margin-top: 2%">
+            @Body
+        </article>
+    </div>
+</div>
+
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        await AuthorizationService.CanGetUserByLogin();
+    }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if(AuthorizationService.CurrentUser is null)
+            {
+                NavigationManager.NavigateTo("/Authorization");
+            }
+        }
+    }
+}
