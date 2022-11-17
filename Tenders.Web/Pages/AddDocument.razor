@@ -46,7 +46,7 @@
         </div>
         <div class="form-group">
             <label >Select document file</label>
-            <InputFile OnChange="@Upload" class="form-control"/>
+            <InputFile OnChange="@Upload" accept=".pdf" class="form-control"/>
         </div>
         <button @onclick="@SaveDocument" class="btn btn-outline-primary btn-block mb-4">Save</button>
 
@@ -112,12 +112,12 @@
     
     private string? GetDisplayName(WaterSupplyDocumentType doc)
     {
-        return doc.GetAttribute<DisplayAttribute>().Name;
+        return doc.GetAttribute<DisplayAttribute>()?.Name;
     }
     
     private string? GetDisplayName(GasSupplyDocumentTypes doc)
     {
-        return doc.GetAttribute<DisplayAttribute>().Name;
+        return doc.GetAttribute<DisplayAttribute>()?.Name;
     }
 
     private async Task Upload(InputFileChangeEventArgs e)
