@@ -31,6 +31,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aG9yaXphdGlvbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Programming/C\#/Tenders/Tenders.Web/Pages/ProjectsList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvamVjdHNMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Programming/C\#/Tenders/Tenders.Web/Pages/Registration.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0cmF0aW9uLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
