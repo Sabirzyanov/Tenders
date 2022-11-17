@@ -1,3 +1,5 @@
+using MongoDB.Driver;
+
 namespace Tenders.Data.Resources;
 
 public interface IRepository<TEntity>
@@ -9,6 +11,6 @@ public interface IRepository<TEntity>
     public Task<IEnumerable<TEntity>> GetAllEntities();
     public Task<TEntity> GetEntityById(string? id);
     public Task<TEntity> GetEntityByName(string name);
-    
-    
+
+
 }

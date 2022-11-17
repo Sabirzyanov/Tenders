@@ -1,0 +1,47 @@
+@using Tenders.Core.Entities.Project
+@using Tenders.Web.Services
+@inject AuthorizationService AuthorizationService
+@inject UserResourceService UserResourceService
+@inject ProjectResourceService ProjectResourceService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
+
+@* @if (CurrentProject is not null) *@
+@* { *@
+    <div class="modal fade" id="exampleModal" tabindex="1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Удаление @CurrentProject.Name</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete the project?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nope</button>
+                    <button type="button" class="btn btn-primary" @onclick="DeleteCurrentProject">Yep</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@* } *@
+
+
+@code {
+
+    [Parameter]
+    public Project CurrentProject { get; set; }
+
+    private async Task DeleteCurrentProject()
+    {
+        if (CurrentProject is not null)
+        {
+            await ProjectResourceService.DeleteProject(CurrentProject.Id);
+            
+            NavigationManager.NavigateTo("/Profile", true);
+            
+        }
+    }
+
+}

@@ -2,12 +2,15 @@
 @using Tenders.Web.Services
 @using Microsoft.AspNetCore.Components
 @using Tenders.Core.Entities
+@using Tenders.Core.Entities.Document
 @using Tenders.Core.Entities.Project
 @using Tenders.Data
 @using Tenders.Web.Data
 @inject ProjectResourceService ProjectResourceService
 @inject UserResourceService UserResourceService
 @inject AuthorizationService AuthorizationService
+@inject DocumentResourceService DocumentResourceService
+@inject NavigationManager NavigationManager
 <h3>EditProject</h3>
 @if (_allDataIsLoaded)
 {
@@ -40,13 +43,42 @@
                 }
             </select>
         </div>
-        <button class="btn btn-outline-primary btn-block mb-4">Save</button>
+        <button class="btn btn-outline-primary btn-block mb-4" @onclick="SaveChanges">Save</button>
         @if (AuthorizationService.CurrentUser.UserType != UserType.Customer)
         {
             <div class="d-grid gap-2 form-group">
-                <button class="btn btn-primary" type="button" style="padding: 2% 0 2% 0; background: transparent; border:  #0a53be 2px solid; color: #0a53be">Add File</button>
+                <button class="btn btn-primary" type="button" @onclick="AddDocument" style="padding: 2% 0 2% 0; background: transparent; border:  #0a53be 2px solid; color: #0a53be">Add File</button>
             </div>
         }
+        <div class="form-group">
+            <label for="selectionBuilder">Project Documents</label>
+            <div class="row">
+                @foreach (var document in _documents)
+                {
+                    <div class="col-sm-6 mb-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">@document.Name</h5>
+                                <button type="button" class="btn btn-primary" @onclick="() => DownloadDocument(document)">Download</button>
+                                @if (AuthorizationService.CurrentUser.UserType == UserType.Customer)
+                                {
+                                    <div class="form-check">
+                                        <input class="form-check-input" checked="@document.IsRequired" type="checkbox" @onchange="@(async ui => { await OnChangeDocumentRequiredStatus((bool)ui.Value, document); })" />
+                                        <label class="form-check-label" for="isrequired"  >Required</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" checked="@document.IsAccepted" type="checkbox" @onchange="@(async ui => { await OnChangeDocumentIsAcceptedStatus((bool)ui.Value, document); })"/>
+                                        <label class="form-check-label" for="isaccepted">Accepted</label>
+                                    </div>
+                                }
+
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
 
     </form>
 }
@@ -56,8 +88,10 @@
 
     [Parameter]
     public string ProjectId { get; set; } = null!;
+
     public List<BaseUser?>? _builders;
     public List<BaseUser?>? _architects;
+    public List<BaseDocument?>? _documents;
     private ProjectInfos _projectInfos = new();
     private bool _allDataIsLoaded;
 
@@ -68,7 +102,36 @@
         _builders = (await UserResourceService.GetAllBuilders()).ToList();
         _architects = (await UserResourceService.GetAllArchitects()).ToList();
         _currentProject = (await ProjectResourceService.GetProjectById(ProjectId));
+        _documents = (await DocumentResourceService.GetDocumentsByProjectId(_currentProject.Id)).ToList();
         _allDataIsLoaded = true;
+    }
+
+    private void AddDocument()
+    {
+        NavigationManager.NavigateTo($"/AddDocument/{ProjectId}");
+    }
+
+    private async Task DownloadDocument(BaseDocument doc)
+    {
+        await using FileStream fs = new FileStream($"wwwroot/{doc.Name + '.' + doc.FilenameExt}", FileMode.Create);
+        await DocumentResourceService.DownloadFile(doc.FileId, fs);
+    }
+
+    private async Task OnChangeDocumentRequiredStatus(bool status, BaseDocument doc)
+    {
+        doc.IsRequired = status;
+        await DocumentResourceService.UpdateDocument(doc);
+    }
+    
+    private async Task OnChangeDocumentIsAcceptedStatus(bool status, BaseDocument doc)
+    {
+        doc.IsAccepted = status;
+        await DocumentResourceService.UpdateDocument(doc);
+    }
+
+    private async Task SaveChanges()
+    {
+        if (_currentProject != null) await ProjectResourceService.UpdateProject(_currentProject);
     }
 
 }

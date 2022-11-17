@@ -97,6 +97,20 @@
           "lib/netstandard2.1/MongoDB.Driver.Core.dll": {}
         }
       },
+      "MongoDB.Driver.GridFS/2.18.0": {
+        "type": "package",
+        "dependencies": {
+          "MongoDB.Bson": "2.18.0",
+          "MongoDB.Driver": "2.18.0",
+          "MongoDB.Driver.Core": "2.18.0"
+        },
+        "compile": {
+          "lib/netstandard2.1/MongoDB.Driver.GridFS.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/MongoDB.Driver.GridFS.dll": {}
+        }
+      },
       "MongoDB.Libmongocrypt/1.6.0": {
         "type": "package",
         "compile": {
@@ -398,6 +412,25 @@
         "packageIcon.png"
       ]
     },
+    "MongoDB.Driver.GridFS/2.18.0": {
+      "sha512": "H1CG6/KysgJ/iOS3VrIDOEg1jhesLEcw58h/ov33VBBbvrg2i1MOT8sPcwrPsCpTgiVT/55yVB9FZgNPGi0r0g==",
+      "type": "package",
+      "path": "mongodb.driver.gridfs/2.18.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "License.txt",
+        "lib/net472/MongoDB.Driver.GridFS.dll",
+        "lib/net472/MongoDB.Driver.GridFS.xml",
+        "lib/netstandard2.0/MongoDB.Driver.GridFS.dll",
+        "lib/netstandard2.0/MongoDB.Driver.GridFS.xml",
+        "lib/netstandard2.1/MongoDB.Driver.GridFS.dll",
+        "lib/netstandard2.1/MongoDB.Driver.GridFS.xml",
+        "mongodb.driver.gridfs.2.18.0.nupkg.sha512",
+        "mongodb.driver.gridfs.nuspec",
+        "packageIcon.png"
+      ]
+    },
     "MongoDB.Libmongocrypt/1.6.0": {
       "sha512": "kh+MMf+ECIf5sQDIqOdKBd75ktD5aD1EuzCX3R4HOUGPlAbeAm8harf4zwlbvFe2BLfCXZO7HajSABLf4P0GNg==",
       "type": "package",
@@ -660,6 +693,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
+      "MongoDB.Driver.GridFS >= 2.18.0",
       "Tenders.Core >= 1.0.0",
       "Tenders.Data >= 1.0.0"
     ]
@@ -707,6 +741,12 @@
     "frameworks": {
       "net6.0": {
         "targetAlias": "net6.0",
+        "dependencies": {
+          "MongoDB.Driver.GridFS": {
+            "target": "Package",
+            "version": "[2.18.0, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",

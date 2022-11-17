@@ -44,7 +44,7 @@
         <input type="tel" @bind="_userInfos.PhoneNumber" @onkeydown='async () => await JsRuntime.InvokeVoidAsync("phoneNumberFormatter")' class="form-control" id="phoneNumber" placeholder="Phone">
     </div>
     <div class="form-group">
-        <select class="form-select" @bind="_userInfos.UserRole" @onclick="CastUser">    
+        <select class="form-select" @bind="_userInfos.UserRole" @onclick="CastUser">
             <option selected value="">Choose...</option>
             <option value="Customer">Customer</option>
             <option value="Architect">Architect</option>
@@ -75,15 +75,24 @@
                 </div>
                 <div class="form-group">
                     <label for="psrn">PSRN</label>
-                    <input type="text" @bind="@_userInfos.PSRN" class="form-control" id="psrn" placeholder="ОГРН">
+                    <input type="text" @bind="@_userInfos.PSRN" maxlength="13" @onclick='() => { psrnClass = ""; }' aria-describedby="psrnInvalid" class="form-control @psrnClass" id="psrn" placeholder="ОГРН">
+                    <div class="invalid-feedback" id="psrnInvalid">
+                        There must be exactly 13 characters
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="tin">TIN</label>
-                    <input type="text" @bind="@_userInfos.TIN" class="form-control" id="tin" placeholder="ИНН">
+                    <input type="text" @bind="@_userInfos.TIN" maxlength="12" @onclick='() => { tinClass = ""; }' aria-describedby="tinInvalid" class="form-control @tinClass" id="tin" placeholder="ИНН">
+                    <div class="invalid-feedback" id="tinInvalid">
+                        There must be exactly 12 characters
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="trrc">TRRC</label>
-                    <input type="text" @bind="@_userInfos.TRRC" class="form-control" id="trrc" placeholder="КПП">
+                    <input type="text" @bind="@_userInfos.TRRC" maxlength="9" @onclick='() => { trrcClass = ""; }' aria-describedby="trrcInvalid" class="form-control @trrcClass" id="trrc" placeholder="КПП">
+                    <div class="invalid-feedback" id="trrcInvalid">
+                        There must be exactly 9 characters
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="address">Address</label>
@@ -105,15 +114,24 @@
                 </div>
                 <div class="form-group">
                     <label for="psrn">PSRN</label>
-                    <input type="text" @bind="@_userInfos.PSRN" class="form-control" id="psrn" placeholder="ОГРН">
+                    <input type="text" @bind="@_userInfos.PSRN" maxlength="13" @onclick='() => { psrnClass = ""; }' aria-describedby="psrnInvalid" class="form-control @psrnClass" id="psrn" placeholder="ОГРН">
+                    <div class="invalid-feedback" id="psrnInvalid">
+                        There must be exactly 13 characters
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="tin">TIN</label>
-                    <input type="text" @bind="@_userInfos.TIN" class="form-control" id="tin" placeholder="ИНН">
+                    <input type="text" @bind="@_userInfos.TIN" maxlength="12" @onclick='() => { tinClass = ""; }' aria-describedby="tinInvalid" class="form-control @tinClass" id="tin" placeholder="ИНН">
+                    <div class="invalid-feedback" id="tinInvalid">
+                        There must be exactly 12 characters
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="trrc">TRRC</label>
-                    <input type="text" @bind="@_userInfos.TRRC" class="form-control" id="trrc" placeholder="КПП">
+                    <input type="text" @bind="@_userInfos.TRRC" maxlength="9" @onclick='() => { trrcClass = ""; }' aria-describedby="trrcInvalid" class="form-control @trrcClass" id="trrc" placeholder="КПП">
+                    <div class="invalid-feedback" id="trrcInvalid">
+                        There must be exactly 9 characters
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="address">Address</label>
@@ -140,6 +158,9 @@
     private string repeatPasswordClass;
     private string passwordClass;
     private string emailClass;
+    private string tinClass;
+    private string psrnClass;
+    private string trrcClass;
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -210,23 +231,53 @@
         return true;
     }
 
-    private async Task Reg()
+    private bool DataValidate()
     {
-        CastUser();
-
         if (!ChechEMail(_userInfos.EMail))
-            return;
+            return false;
 
         if (!CheckPassword(_userInfos.Password))
         {
             passwordClass = "is-invalid";
-            return;
+            return false;
         }
         if (_userInfos.Password != _repeatPassword)
         {
             repeatPasswordClass = "is-invalid";
-            return;
+            return false;
         }
+
+        if (_userInfos.TIN != null || _userInfos.TRRC != null || _userInfos.PSRN != null)
+        {
+            if (_userInfos.TIN.Length != 12)
+            {
+                tinClass = "is-invalid";
+                return false;
+            }
+
+            if (_userInfos.TRRC.Length != 9)
+            {
+                trrcClass = "is-invalid";
+                return false;
+            }
+
+            if (_userInfos.PSRN.Length != 13)
+            {
+                psrnClass = "is-invalid";
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    private async Task Reg()
+    {
+        CastUser();
+
+        if (!DataValidate())
+            return;
 
         if (_potentialUser != null)
         {

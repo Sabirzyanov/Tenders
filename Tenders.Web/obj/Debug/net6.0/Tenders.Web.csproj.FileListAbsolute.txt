@@ -44,3 +44,5 @@ C:\Programming\C#\Tenders\Tenders.Web\obj\Debug\net6.0\ref\Tenders.Web.dll
 C:\Programming\C#\Tenders\Tenders.Web\obj\Debug\net6.0\scopedcss\Pages\Profile.razor.rz.scp.css
 C:\Programming\C#\Tenders\Tenders.Web\obj\Debug\net6.0\scopedcss\Pages\CreateProject.razor.rz.scp.css
 C:\Programming\C#\Tenders\Tenders.Web\obj\Debug\net6.0\scopedcss\Pages\EditProject.razor.rz.scp.css
+C:\Programming\C#\Tenders\Tenders.Web\obj\Debug\net6.0\scopedcss\Pages\AddDocument.razor.rz.scp.css
+C:\Programming\C#\Tenders\Tenders.Web\bin\Debug\net6.0\MongoDB.Driver.GridFS.dll

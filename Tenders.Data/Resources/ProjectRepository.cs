@@ -18,6 +18,6 @@ public class ProjectRepository : BaseRepository<ProjectDbModel, Project>
 
     protected override ProjectDbModel CastEntityToModel(Project entity)
     {
-        return new ProjectDbModel(entity.Name, entity.Description, entity.CustomerId, entity.ArchitectId, entity.BuilderId, entity.IndustryType.ToString());
+        return new ProjectDbModel(entity.Name, entity.Description, entity.CustomerId, entity.ArchitectId, entity.BuilderId, entity.IndustryType.ToString()) {Id = entity.Id};
     }
 }

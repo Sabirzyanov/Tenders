@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "Tenders.Web/1.0.0": {
         "dependencies": {
+          "MongoDB.Driver.GridFS": "2.18.0",
           "Tenders.Core": "1.0.0",
           "Tenders.Data": "1.0.0"
         },
@@ -72,6 +73,19 @@
         },
         "runtime": {
           "lib/netstandard2.1/MongoDB.Driver.Core.dll": {
+            "assemblyVersion": "2.18.0.0",
+            "fileVersion": "2.18.0.0"
+          }
+        }
+      },
+      "MongoDB.Driver.GridFS/2.18.0": {
+        "dependencies": {
+          "MongoDB.Bson": "2.18.0",
+          "MongoDB.Driver": "2.18.0",
+          "MongoDB.Driver.Core": "2.18.0"
+        },
+        "runtime": {
+          "lib/netstandard2.1/MongoDB.Driver.GridFS.dll": {
             "assemblyVersion": "2.18.0.0",
             "fileVersion": "2.18.0.0"
           }
@@ -206,6 +220,13 @@
       "sha512": "sha512-/X5Ty32gyDyzs/fWFwKGS0QUhfQT3V9Sc/F8yhILBu8bjCjBscOFKQsKieAha8xxBnYS7dZvTvhvEJWT7HgJ1g==",
       "path": "mongodb.driver.core/2.18.0",
       "hashPath": "mongodb.driver.core.2.18.0.nupkg.sha512"
+    },
+    "MongoDB.Driver.GridFS/2.18.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-H1CG6/KysgJ/iOS3VrIDOEg1jhesLEcw58h/ov33VBBbvrg2i1MOT8sPcwrPsCpTgiVT/55yVB9FZgNPGi0r0g==",
+      "path": "mongodb.driver.gridfs/2.18.0",
+      "hashPath": "mongodb.driver.gridfs.2.18.0.nupkg.sha512"
     },
     "MongoDB.Libmongocrypt/1.6.0": {
       "type": "package",

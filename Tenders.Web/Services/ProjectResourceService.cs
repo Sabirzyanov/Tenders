@@ -34,4 +34,17 @@ public class ProjectResourceService
     {
         return await _projectProvider.GetAll(); 
     }
+
+    public async Task<IResult> UpdateProject(Project pr)
+    {
+        await _projectProvider.Update(pr);
+        return Results.Ok();
+    }
+
+
+    public async Task<IResult> DeleteProject(string id)
+    {
+        await _projectProvider.Delete(id);
+        return Results.Ok();
+    }
 }

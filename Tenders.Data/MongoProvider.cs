@@ -1,3 +1,4 @@
+using MongoDB.Driver;
 using Tenders.Core.Entities;
 using Tenders.Data.Resources;
 
@@ -40,4 +41,5 @@ public class MongoProvider<TEntity>
     {
         return await _repository.GetEntityById(id);
     }
+
 }

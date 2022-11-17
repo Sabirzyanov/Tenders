@@ -1,0 +1,48 @@
+@page "/projectsList"
+@using Tenders.Web.Services
+@using Tenders.Core.Entities.Project
+@using Tenders.Data
+@using Tenders.Web.Components
+@inject AuthorizationService AuthorizationService
+@inject UserResourceService UserResourceService
+@inject ProjectResourceService ProjectResourceService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
+
+
+@if (_currentProjects is not null)
+{
+    @if (_currentProjects.Count == 0)
+    {
+        <h4>Nothing projects</h4>
+    }
+    @foreach (var project in _currentProjects)
+    {
+        <ProjectCard CurrentProject="project"/>
+    }
+}
+
+
+
+@code {
+    private List<Project> _currentProjects;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (AuthorizationService.CurrentUser is null)
+            return;
+
+        if (AuthorizationService.CurrentUser.UserType == UserType.Customer)
+            _currentProjects = (await ProjectResourceService.GetAllProjects()).Where(x => x.CustomerId == AuthorizationService.CurrentUser.Id).ToList();
+
+        if (AuthorizationService.CurrentUser.UserType == UserType.Architect)
+            _currentProjects = (await ProjectResourceService.GetAllProjects()).Where(x => x.ArchitectId == AuthorizationService.CurrentUser.Id).ToList();
+
+        if (AuthorizationService.CurrentUser.UserType == UserType.Builder)
+            _currentProjects = (await ProjectResourceService.GetAllProjects()).Where(x => x.BuilderId == AuthorizationService.CurrentUser.Id).ToList();
+
+        StateHasChanged();
+    }
+
+
+}

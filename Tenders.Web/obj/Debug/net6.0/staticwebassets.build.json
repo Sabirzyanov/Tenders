@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "CSoe59DHHIZl2Qdq7lGVJquzxobGz626zFhXqwMCVLo=",
+  "Hash": "YBnvcOApnYFaKuhTTSnTMRsnsUCM+pA4vWuzgcyAgek=",
   "Source": "Tenders.Web",
   "BasePath": "_content/Tenders.Web",
   "Mode": "Default",
@@ -321,6 +321,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\scriptLoader.js"
+    },
+    {
+      "Identity": "C:\\Programming\\C#\\Tenders\\Tenders.Web\\wwwroot\\qweqwew.pdf",
+      "SourceId": "Tenders.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Programming\\C#\\Tenders\\Tenders.Web\\wwwroot\\",
+      "BasePath": "_content/Tenders.Web",
+      "RelativePath": "qweqwew.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\qweqwew.pdf"
     }
   ]
 }

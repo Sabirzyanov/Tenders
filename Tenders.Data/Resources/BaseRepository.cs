@@ -83,4 +83,5 @@ public abstract class BaseRepository<TModel, TEntity> : IRepository<TEntity>
 
     protected abstract TEntity CastModelToEntity(TModel model);
     protected abstract TModel CastEntityToModel(TEntity entity);
+
 }
