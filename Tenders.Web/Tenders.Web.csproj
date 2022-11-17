@@ -11,4 +11,8 @@
       <ProjectReference Include="..\Tenders.Data\Tenders.Data.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MongoDB.Driver.GridFS" Version="2.18.0" />
+    </ItemGroup>
+
 </Project>

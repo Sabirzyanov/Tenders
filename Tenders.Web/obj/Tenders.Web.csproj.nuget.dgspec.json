@@ -164,6 +164,12 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
+          "dependencies": {
+            "MongoDB.Driver.GridFS": {
+              "target": "Package",
+              "version": "[2.18.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

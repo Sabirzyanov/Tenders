@@ -1,3 +1,7 @@
+/* _content/Tenders.Web/Pages/AddDocument.razor.rz.scp.css */
+.form-group[b-6xflmw729t] {
+    margin-bottom: 2.5%;
+}
 /* _content/Tenders.Web/Pages/CreateProject.razor.rz.scp.css */
 .form-group[b-46gomkh4ok] {
     margin-bottom: 2.5%;
@@ -5,6 +9,10 @@
 /* _content/Tenders.Web/Pages/EditProject.razor.rz.scp.css */
 .form-group[b-cr66ggiwc6] {
     margin-bottom: 2.5%;
+}
+
+.form-check[b-cr66ggiwc6] {
+    margin: 0 -2% 0 -2%;
 }
 /* _content/Tenders.Web/Pages/Profile.razor.rz.scp.css */
 .main-body[b-v97q4nutfw] {
@@ -53,6 +61,22 @@
 }
 .shadow-none[b-v97q4nutfw] {
     box-shadow: none!important;
+}
+
+.card p[b-v97q4nutfw] {
+    margin-bottom: .25rem;
+}
+
+.card-header[b-v97q4nutfw] {
+    padding-bottom: 0;
+}
+
+.card-body[b-v97q4nutfw] {
+    padding-top: 0;
+}
+
+.modal[b-v97q4nutfw] {
+    z-index: 10;
 }
 /* _content/Tenders.Web/Shared/MainLayout.razor.rz.scp.css */
 /* _content/Tenders.Web/Shared/NavMenu.razor.rz.scp.css */

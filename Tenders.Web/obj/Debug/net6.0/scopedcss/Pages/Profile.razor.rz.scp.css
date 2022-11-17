@@ -45,3 +45,19 @@
 .shadow-none[b-v97q4nutfw] {
     box-shadow: none!important;
 }
+
+.card p[b-v97q4nutfw] {
+    margin-bottom: .25rem;
+}
+
+.card-header[b-v97q4nutfw] {
+    padding-bottom: 0;
+}
+
+.card-body[b-v97q4nutfw] {
+    padding-top: 0;
+}
+
+.modal[b-v97q4nutfw] {
+    z-index: 10;
+}

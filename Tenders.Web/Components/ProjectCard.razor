@@ -1,0 +1,28 @@
+@using Tenders.Core.Entities.Project
+@using Tenders.Web.Services
+@inject AuthorizationService AuthorizationService
+@inject UserResourceService UserResourceService
+@inject ProjectResourceService ProjectResourceService
+@inject NavigationManager NavigationManager
+
+
+<div class="card">
+    <div class="card-header bg-transparent border-bottom-0">
+        <h5 class="card-title d-inline" style="float: left">@CurrentProject.Name</h5>
+        <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn-close d-inline" style="float: right;" aria-label="Close"></button>
+    </div>
+    <div class="card-body ">
+        <p class="card-text">@CurrentProject.Description</p>
+        <button type="button" class="btn btn-primary" @onclick="OpenProject">Open</button>
+    </div>
+</div>
+<ProjectDelete CurrentProject="@CurrentProject"/>
+
+@code {
+    [Parameter] public Project CurrentProject { get; set; }
+    
+    private void OpenProject()
+    {
+        NavigationManager.NavigateTo($"/EditProject/{CurrentProject.Id}");
+    }
+}

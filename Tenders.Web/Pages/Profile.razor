@@ -11,6 +11,9 @@
 @using Tenders.Core.Enums
 @using Tenders.Data
 @using Tenders.Web.Data
+
+@using Tenders.Web.Components
+
 @if (AuthorizationService.CurrentUser is not null)
 {
     <div class="main-body">
@@ -220,19 +223,19 @@
         }
         else
         {
-            <div class="row mb-3">
-                <div class="col-sm-3">
-                    <h6 class="mb-0">Industry type</h6>
-                </div>
-                <div class="col-sm-9 text-secondary">
-                    <input type="text" class="form-control" @bind="_currentUserInfo.IndustryType">
-                </div>
-            </div>
-            <hr>
+            @* <div class="row mb-3"> *@
+            @*     <div class="col-sm-3"> *@
+            @*         <h6 class="mb-0">Industry type</h6> *@
+            @*     </div> *@
+            @*     <div class="col-sm-9 text-secondary"> *@
+            @*         <input type="text" class="form-control" @bind="_currentUserInfo.IndustryType"> *@
+            @*     </div> *@
+            @* </div> *@
+            @* <hr> *@
         }
         <div class="row">
             <div class="col-sm-12">
-                <input type="button"style="margin-bottom: 2%;" class="btn btn-success" @onclick="Update" value="Save Changes">
+                <input type="button" style="margin-bottom: 2%;" class="btn btn-success" @onclick="Update" value="Save Changes">
             </div>
         </div>
     }
@@ -249,28 +252,20 @@
     </div>
 
 
-    <div>
+    <div class="row">
         @if (_currentProjects is not null)
         {
             @foreach (var project in _currentProjects)
             {
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@project.Name</h5>
-                        <p class="card-text">@project.Description</p>
-                        <button type="button" class="btn btn-primary" @onclick="() => { OpenProject(project); }">Open</button>
-                    </div>
+                <div class="col-sm-6">
+                    <ProjectCard CurrentProject="@project"/>
                 </div>
             }
         }
+    </div>
+    </div>
+    </div>
         
-
-    </div>
-
-
-    </div>
-    </div>
-
     </div>
 }
 
@@ -278,6 +273,10 @@
     UserInfos? _currentUserInfo = new();
     private List<Project> _currentProjects;
     private bool _isEditing;
+    private Project _selectedProject;
+    private string _visibleClass;
+
+    
 
     protected override async Task OnInitializedAsync()
     {
@@ -292,7 +291,7 @@
             _currentProjects = (await ProjectResourceService.GetAllProjects()).Where(x => x.ArchitectId == AuthorizationService.CurrentUser.Id).ToList();
         else if (AuthorizationService.CurrentUser.UserType == UserType.Builder)
             _currentProjects = (await ProjectResourceService.GetAllProjects()).Where(x => x.BuilderId == AuthorizationService.CurrentUser.Id).ToList();
-        
+
         CastUserToInfo();
     }
 
@@ -364,9 +363,6 @@
         }
     }
 
-    private void OpenProject(Project project)
-    {
-        NavigationManager.NavigateTo($"/EditProject/{project.Id}");
-    }
+    
 
 }

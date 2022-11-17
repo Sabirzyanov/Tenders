@@ -28,6 +28,20 @@
     private string _email;
     private string _password;
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+            if (AuthorizationService.CurrentUser != null)
+                NavigationManager.NavigateTo("/Profile");
+        base.OnAfterRender(firstRender);
+    }
+
+    protected override void OnInitialized()
+    {
+        if (AuthorizationService.CurrentUser is not null)
+            NavigationManager.NavigateTo("/Profile");
+    }
+
     private async Task Auth()
     {
         Logger.LogInformation(_email);

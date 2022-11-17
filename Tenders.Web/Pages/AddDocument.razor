@@ -1,0 +1,132 @@
+@inject ProjectResourceService ProjectResourceService
+@inject UserResourceService UserResourceService
+@inject AuthorizationService AuthorizationService
+@inject DocumentResourceService DocumentResourceService
+@inject NavigationManager NavigationManager
+@page "/AddDocument"
+@page "/AddDocument/{ProjectId}"
+@using Tenders.Core.Enums
+@using Tenders.Core.Entities.Project
+@using Tenders.Web.Services
+@using Tenders.Web.Extensions
+@using System.ComponentModel.DataAnnotations
+@using Tenders.Core.Entities.Documents
+@using Tenders.Web.Data
+<h3>AddDocument</h3>
+@if (_isAllDataLoaded)
+{
+    <form name="project" class="needs-validation">
+        <div class="form-group">
+            <label for="projectInput">Document Name</label>
+            <input type="text"  class="form-control required" @bind="_documentsInfos.Name" id="projectInput" placeholder="Enter Project Name">
+        </div>
+        <div class="form-group">
+            <label for="projectDescriptionInput">Project Description</label>
+            <input type="text" class="form-control required" @bind="_documentsInfos.Description" id="projectDescriptionInput" placeholder="Enter Project Desc">
+        </div>
+        <div class="form-group">
+            <label for="projectDescriptionInput">Select document Type</label>
+            <select class="form-select" id="selectionArchitect" @bind="_documentsInfos.DocumentType">
+                <option selected>Choose...</option>
+                @if (_currentProject.IndustryType == IndustryType.WaterSupply)
+                {
+                    @foreach (WaterSupplyDocumentType i in Enum.GetValues(typeof(WaterSupplyDocumentType)))
+                    {
+                        <option value="@GetDisplayName(i)">@GetDisplayName(i)</option>
+                    }
+                }
+                else if (_currentProject.IndustryType == IndustryType.GasSupply)
+                {
+                    @foreach (GasSupplyDocumentTypes i in Enum.GetValues(typeof(GasSupplyDocumentTypes)))
+                    {
+                        <option value="@GetDisplayName(i)">@GetDisplayName(i)</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label >Select document file</label>
+            <InputFile OnChange="@Upload" class="form-control"/>
+        </div>
+        <button @onclick="@SaveDocument" class="btn btn-outline-primary btn-block mb-4">Save</button>
+
+    </form>
+}
+
+
+@code {
+    [Parameter]
+    public string ProjectId { get; set; } = null!;
+    private Project _currentProject;
+    private bool _isAllDataLoaded;
+    private DocumentsInfos _documentsInfos = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AuthorizationService.CurrentUser is null)
+        {
+            NavigationManager.NavigateTo("/authorization");
+        }
+
+        _currentProject = (await ProjectResourceService.GetProjectById(ProjectId));
+        _isAllDataLoaded = true;
+    }
+
+    private async Task SaveDocument()
+    {
+        if (_documentsInfos.Name is null || _documentsInfos.FileId is null)
+            return;
+
+        switch (_currentProject.IndustryType)
+        {
+            case IndustryType.GasSupply:
+                await DocumentResourceService.SaveDocument(new GasSupplyDocument()
+                {
+                    Name = _documentsInfos.Name,
+                    FileId = _documentsInfos.FileId,
+                    FilenameExt = _documentsInfos.FilenameExt,
+                    ProjectId = _currentProject.Id,
+                    OwnerId = AuthorizationService.CurrentUser.Id,
+                    DocumentType = DocumentType.GasSupplyDocument
+                });
+                break;
+            case IndustryType.WaterSupply:
+                await DocumentResourceService.SaveDocument(new WaterSupplyDocument()
+                {
+                    Name = _documentsInfos.Name,
+                    FileId = _documentsInfos.FileId,
+                    FilenameExt = _documentsInfos.FilenameExt,
+                    ProjectId = _currentProject.Id,
+                    OwnerId = AuthorizationService.CurrentUser.Id,
+                    DocumentType = DocumentType.WaterSupplyDocument
+                });
+                break;
+            case IndustryType.Unspecified:
+                break;
+            default:
+                return;
+        }
+        
+        NavigationManager.NavigateTo($"/ExitProject/{ProjectId}");
+    }
+    
+    private string? GetDisplayName(WaterSupplyDocumentType doc)
+    {
+        return doc.GetAttribute<DisplayAttribute>().Name;
+    }
+    
+    private string? GetDisplayName(GasSupplyDocumentTypes doc)
+    {
+        return doc.GetAttribute<DisplayAttribute>().Name;
+    }
+
+    private async Task Upload(InputFileChangeEventArgs e)
+    {
+        if (_documentsInfos.Name is null)
+            return;
+        await using var fs = e.File.OpenReadStream();
+
+        _documentsInfos.FilenameExt = e.File.Name.Split('.')[^1];
+        _documentsInfos.FileId = await DocumentResourceService.SaveFile($"{_documentsInfos.Name!}.{e.File.Name.Split('.')[^1]}", fs);
+    }
+}
